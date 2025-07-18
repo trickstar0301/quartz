@@ -190,6 +190,23 @@
             border-radius: 6px;
             margin: 10px 0;
         }
+        .link-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 12px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .link-button:hover {
+            background-color: #2980b9;
+        }
+        .link-button:active {
+            background-color: #21618c;
+        }
         
         .info-section {
             margin-top: 40px;
@@ -224,56 +241,66 @@
         @media (max-width: 768px) {
             body {
                 padding: 10px;
+                margin: 0;
+                overflow-x: hidden;
             }
             .container {
                 padding: 15px;
                 border-radius: 8px;
+                margin: 0;
+                max-width: 100%;
             }
             h1 {
-                font-size: 22px;
+                font-size: 20px;
             }
             .subtitle {
-                font-size: 14px;
+                font-size: 13px;
                 margin-bottom: 20px;
             }
             .legend {
-                gap: 15px;
+                gap: 10px;
                 margin-bottom: 20px;
+                justify-content: space-around;
             }
             .legend-item {
-                font-size: 12px;
+                font-size: 11px;
+                gap: 4px;
             }
             .legend-color {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
             }
             .schedule-grid {
-                grid-template-columns: 50px repeat(7, 1fr);
-                font-size: 11px;
+                grid-template-columns: 40px repeat(7, 1fr);
+                font-size: 10px;
+                gap: 0;
             }
             .header-cell {
-                padding: 8px 2px;
-                font-size: 12px;
+                padding: 6px 1px;
+                font-size: 11px;
             }
             .week-header {
-                font-size: 12px;
-                padding: 8px;
+                font-size: 11px;
+                padding: 6px;
             }
             .date-cell {
-                min-height: 70px;
-                padding: 3px;
+                min-height: 65px;
+                padding: 2px;
+                min-width: auto;
             }
             .date-number {
-                font-size: 12px;
+                font-size: 11px;
                 margin-bottom: 2px;
             }
             .event {
-                font-size: 9px;
-                padding: 3px 4px;
+                font-size: 8px;
+                padding: 2px 3px;
                 margin-bottom: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+                line-height: 1.2;
+                word-break: break-all;
             }
             .modal-content {
                 margin: 5% auto;
@@ -314,22 +341,39 @@
             }
             /* タップしやすいようにイベントの高さを確保 */
             .event {
-                min-height: 20px;
+                min-height: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 text-align: center;
             }
-            /* 横スクロール可能にする */
+            /* 横スクロール防止 */
             .schedule-wrapper {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
-                margin: 0 -15px;
-                padding: 0 15px;
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
             }
-            /* 日付セルの最小幅を確保 */
-            .date-cell {
-                min-width: 45px;
+            /* リンクボタンのスタイル調整 */
+            .link-button {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+            /* 施設カードの調整 */
+            .facility-card {
+                padding: 12px;
+            }
+            .facility-card h3 {
+                font-size: 15px;
+            }
+            .facility-card p {
+                font-size: 12px;
+            }
+            /* 月見出しの調整 */
+            h2 {
+                font-size: 18px !important;
+                margin: 20px 0 15px !important;
             }
         }
     </style>
@@ -344,6 +388,7 @@
                 <div class="legend-color special-event"></div>
                 <span>特別イベント</span>
             </div>
+    </div>
             <div class="legend-item">
                 <div class="legend-color water-event"></div>
                 <span>水遊びイベント</span>
@@ -385,6 +430,7 @@
             </div>
             <div class="date-cell">
                 <div class="date-number">23日</div>
+                <div class="event workshop" onclick="showDetails('minami-papa-mama')">プレパパママ教室</div>
             </div>
             <div class="date-cell">
                 <div class="date-number">24日</div>
@@ -397,6 +443,7 @@
                 <div class="date-number">26日</div>
                 <div class="event special-event" onclick="showDetails('planetarium-726')">プラネタリウム</div>
                 <div class="event special-event" onclick="showDetails('planetarium-evening-726')">星と音楽のひととき</div>
+                <div class="event workshop" onclick="showDetails('minami-twins')">多胎児家族あつまれ</div>
             </div>
 
             <!-- 第2週: 7/27-7/31 -->
@@ -420,6 +467,7 @@
                 <div class="event special-event" onclick="showDetails('library-story-731')">図書館読み聞かせ</div>
                 <div class="event workshop" onclick="showDetails('pottery-731')">陶芸体験（新座）</div>
                 <div class="event workshop" onclick="showDetails('fula-731')">親子フラダンス</div>
+                <div class="event festival" onclick="showDetails('minami-summer-festival')">南センター夏まつり</div>
             </div>
             <div class="date-cell" style="background-color: #f5f5f5;"></div>
             <div class="date-cell" style="background-color: #f5f5f5;"></div>
@@ -599,16 +647,171 @@
         </div>
 
         <div class="info-section">
-            <h2>🎯 4歳・2歳におすすめの特別イベント</h2>
-            <ul>
-                <li><strong>Wapia水遊びイベント（毎週火曜日）</strong>：幼児も安全に楽しめる水遊び企画</li>
-                <li><strong>図書館読み聞かせ（毎週木曜日）</strong>：年齢別プログラムで飽きずに楽しめます</li>
-                <li><strong>プラネタリウム（週末）</strong>：短時間プログラムで小さなお子様も楽しめます</li>
-                <li><strong>彩夏祭（8/1-3）</strong>：日中は屋台、夜は花火と一日中楽しめます</li>
-                <li><strong>夏休み子どものつどい（8/2）</strong>：影絵や大型絵本など特別プログラム</li>
-            </ul>
+            <h2>📍 重点調査施設の情報</h2>
+            <div class="facility-list">
+                <div class="facility-card">
+                    <h3>新座市児童センター</h3>
+                    <p>
+                        <strong>住所：</strong>新座市本多1-3-10<br>
+                        <strong>開館：</strong>9:00～18:00（17:00～18:00は中高生タイム）<br>
+                        <strong>特徴：</strong>プラネタリウム完備、キャンプ場併設<br>
+                        <strong>夏の特別プログラム：</strong><br>
+                        ・毎週火～金15:00 プラネタリウム追加投影<br>
+                        ・7/26 星と音楽のひととき<br>
+                        ・8/2 星空観察会<br>
+                        ・8/30 かえっこバザール
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>下新倉児童館</h3>
+                    <p>
+                        <strong>住所：</strong>和光市下新倉5-21-1（下新倉小学校内）<br>
+                        <strong>電話：</strong>048-464-1515<br>
+                        <strong>開館：</strong>9:30～17:00<br>
+                        <strong>休館：</strong>毎週火曜日・第3日曜日<br>
+                        <strong>特徴：</strong>2016年開館の新しい複合施設、図書館併設
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>新倉児童館</h3>
+                    <p>
+                        <strong>住所：</strong>和光市新倉1-38-1<br>
+                        <strong>電話：</strong>048-463-1679<br>
+                        <strong>開館：</strong>9:30～17:00<br>
+                        <strong>休館：</strong>毎週火曜日・第3日曜日<br>
+                        <strong>アクセス：</strong>和光市駅北口から徒歩11分
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>和光市南子育て世代包括支援センター</h3>
+                    <p>
+                        <strong>住所：</strong>和光市南2-3-3（みなみ保育園2F）<br>
+                        <strong>電話：</strong>048-450-4642<br>
+                        <strong>開所：</strong>9:00～17:00<br>
+                        <strong>休所：</strong>日曜日・祝日<br>
+                        <strong>特徴：</strong>0歳～2歳児向けプログラム充実<br>
+                        <strong>7月の特別イベント：</strong><br>
+                        ・7/10 0歳児夏まつり<br>
+                        ・7/12 プラレールの日<br>
+                        ・7/19 ドルチェコンサート<br>
+                        ・7/26 多胎児家族あつまれ<br>
+                        ・7/31 夏まつり
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>朝霞市立はまさき児童館</h3>
+                    <p>
+                        <strong>住所：</strong>朝霞市浜崎51-1（はあとぴあ内）<br>
+                        <strong>電話：</strong>048-486-2477<br>
+                        <strong>開館：</strong>9:30～17:30（夏休み18:00～20:00延長）<br>
+                        <strong>特徴：</strong>ドーム型天井のアリーナ、駐車場完備<br>
+                        <strong>夏の延長開館：</strong>6月～8月は20時まで（小学生以上）
+                    </p>
+                </div>
+            </div>
+        <div class="info-section">
+            <h2>🏙️ 東京都内おすすめスポット</h2>
+            <div class="facility-list">
+                <div class="facility-card">
+                    <h3>国立科学博物館「コンパス」</h3>
+                    <p>
+                        <strong>住所：</strong>東京都台東区上野公園7-20<br>
+                        <strong>対象：</strong>4～6歳推奨（0歳から入室可）<br>
+                        <strong>料金：</strong>2歳以上300円<br>
+                        <strong>時間：</strong>45分間の完全入替制<br>
+                        <strong>特徴：</strong>アスレチック、動物の剥製観察、絵本コーナーなど体験型展示<br>
+                        <strong>予約：</strong>毎月1日正午に翌月分受付開始（要事前予約）<br>
+                        <strong>アクセス：</strong>池袋から山手線で約20分<br>
+                        <a href="https://www.kahaku.go.jp/learning/compass/" target="_blank" class="link-button">コンパス公式サイト</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>アニタッチ東京ドームシティ</h3>
+                    <p>
+                        <strong>住所：</strong>東京都文京区後楽1-3-61<br>
+                        <strong>オープン：</strong>2025年7月29日NEW OPEN！<br>
+                        <strong>料金：</strong>子ども（2歳～）平日1,100円、土日祝1,650円<br>
+                        <strong>特徴：</strong>都内最大級の屋内型ふれあい動物園<br>
+                        　　　約50種300匹以上の動物と触れ合える<br>
+                        <strong>営業：</strong>10:00～18:00（最終入場17:00）<br>
+                        <strong>アクセス：</strong>池袋から丸ノ内線で約10分<br>
+                        <a href="https://www.tokyo-dome.co.jp/asobono/" target="_blank" class="link-button">東京ドームシティ公式サイト</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>新宿高島屋キッズカーニバル</h3>
+                    <p>
+                        <strong>期間：</strong>2025年7月26日～8月26日<br>
+                        <strong>場所：</strong>新宿高島屋 各階<br>
+                        <strong>主なイベント：</strong><br>
+                        ・ベアアートをつくろう（8/2-3、3,300円）<br>
+                        ・サンリオおみこし（8/23-24、無料）<br>
+                        ・ワークショップ多数（2歳から参加可）<br>
+                        <strong>予約開始：</strong>7月19日（土）10:30～<br>
+                        <strong>アクセス：</strong>池袋から山手線で約10分<br>
+                        <a href="https://www.takashimaya.co.jp/shinjuku/" target="_blank" class="link-button">新宿高島屋公式サイト</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>板橋区立教育科学館</h3>
+                    <p>
+                        <strong>住所：</strong>東京都板橋区常盤台4-14-1<br>
+                        <strong>料金：</strong>入館無料、プラネタリウム子ども120円<br>
+                        <strong>特徴：</strong>科学展示室、プラネタリウム完備<br>
+                        <strong>幼児向けプログラム：</strong><br>
+                        ・火木土日祝に幼児向け番組上映<br>
+                        ・星座解説なしの優しい内容<br>
+                        <strong>開館：</strong>9:00～16:30<br>
+                        <strong>アクセス：</strong>池袋から東武東上線で約15分（上板橋駅）<br>
+                        <a href="https://www.itbs-sem.jp/" target="_blank" class="link-button">教育科学館公式サイト</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>日本科学未来館</h3>
+                    <p>
+                        <strong>住所：</strong>東京都江東区青海2-3-6<br>
+                        <strong>料金：</strong>子ども（6歳以下）無料、大人630円<br>
+                        <strong>夏休み特別イベント：</strong><br>
+                        ・研究開発の最前線に触れるワークショップ<br>
+                        ・ロボット展示、宇宙展示が人気<br>
+                        ・ドームシアターで映像体験<br>
+                        <strong>開館：</strong>10:00～17:00<br>
+                        <strong>アクセス：</strong>池袋からりんかい線で約30分<br>
+                        <a href="https://www.miraikan.jst.go.jp/" target="_blank" class="link-button">日本科学未来館公式サイト</a>
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <div class="info-section">
+            <h2>🔗 関連リンク集</h2>
+            <div class="facility-list">
+                <div class="facility-card">
+                    <h3>和光市</h3>
+                    <p>
+                        <a href="https://wapia.jp/" target="_blank" class="link-button">和光市総合児童センターWapia</a><br>
+                        <a href="https://www.wakolib.jp/" target="_blank" class="link-button">和光市図書館</a><br>
+                        <a href="http://www.wako-shakyo.or.jp/" target="_blank" class="link-button">和光市社会福祉協議会</a><br>
+                        <a href="http://www.hartland-nakayoshi.jp/" target="_blank" class="link-button">南子育て世代包括支援センター</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>朝霞市</h3>
+                    <p>
+                        <a href="https://www.asaka-shakyo.or.jp/" target="_blank" class="link-button">朝霞市社会福祉協議会</a><br>
+                        <a href="https://saikasai.com/" target="_blank" class="link-button">彩夏祭公式サイト</a><br>
+                        <a href="https://www.city.asaka.lg.jp/" target="_blank" class="link-button">朝霞市公式ホームページ</a>
+                    </p>
+                </div>
+                <div class="facility-card">
+                    <h3>新座市</h3>
+                    <p>
+                        <a href="https://sites.google.com/a/ccn01.mygbiz.com/jidou_center/" target="_blank" class="link-button">新座市児童センター</a><br>
+                        <a href="https://www.city.niiza.lg.jp/" target="_blank" class="link-button">新座市公式ホームページ</a>
+                    </p>
+                </div>
+            </div>
+        </div>
 
     <script>
         // イベント詳細データ
@@ -975,7 +1178,8 @@
                     <strong>申込：</strong>不要（当日先着順）<br>
                     <strong>定員：</strong>80名<br>
                     <strong>問合せ：</strong>048-479-8822<br>
-                    <strong>アクセス：</strong>新座市本多1-3-10
+                    <strong>アクセス：</strong>新座市本多1-3-10<br>
+                    <a href="https://sites.google.com/a/ccn01.mygbiz.com/jidou_center/" target="_blank" class="link-button">新座市児童センター公式サイト</a>
                 `
             },
             'kaekko-bazaar-830': {
@@ -1049,7 +1253,8 @@
                         <strong>内容：</strong>100以上の屋台、ステージイベント、子ども向け遊びコーナー。金曜日は前夜祭として、比較的ゆったり楽しめます。
                     </div>
                     <strong>見どころ：</strong>キッズエリアには、ミニ縁日や水遊びコーナーあり<br>
-                    <strong>アクセス：</strong>朝霞駅から徒歩15分
+                    <strong>アクセス：</strong>朝霞駅から徒歩15分<br>
+                    <a href="https://saikasai.com/" target="_blank" class="link-button">彩夏祭公式サイト</a>
                 `
             },
             'saika-festival-2': {
@@ -1091,7 +1296,8 @@
                     </div>
                     <strong>申込：</strong>不要（当日先着順）<br>
                     <strong>定員：</strong>各回30名<br>
-                    <strong>問合せ：</strong>048-463-8723
+                    <strong>問合せ：</strong>048-463-8723<br>
+                    <a href="https://www.wakolib.jp/" target="_blank" class="link-button">和光市図書館公式サイト</a>
                 `
             },
             'star-observation-82': {
