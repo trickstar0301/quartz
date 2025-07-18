@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>夏休み特別イベントカレンダー 2025年7月20日～8月31日</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            gap: 1px;
+            background-color: #e0e0e0;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 40px;
+        }
+        .header-cell {
+            background-color: #34495e;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .week-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .date-cell {
+            background-color: white;
+            min-height: 100px;
+            padding: 8px;
+            position: relative;
+            transition: background-color 0.2s;
+        }
+        .date-cell:hover {
+            background-color: #f8f9fa;
+        }
+        .date-number {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #2c3e50;
+        }
+        .sunday .date-number {
+            color: #e74c3c;
+        }
+        .saturday .date-number {
+            color: #3498db;
+        }
+        .event {
+            font-size: 11px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .event:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .special-event {
+            background-color: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffcc80;
+        }
+        .water-event {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        .festival {
+            background-color: #fce4ec;
+            color: #c2185b;
+            border: 1px solid #f8bbd0;
+        }
+        .workshop {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        
+        /* モーダルのスタイル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+        }
+        .close:hover {
+            color: #333;
+        }
+        .modal-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .modal-details {
+            line-height: 1.8;
+            color: #555;
+        }
+        .modal-details strong {
+            color: #333;
+        }
+        .modal-details .highlight {
+            background-color: #fff3e0;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .info-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .highlight-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-box h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        .highlight-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .highlight-box li {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .legend {
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+            .legend-item {
+                font-size: 12px;
+            }
+            .legend-color {
+                width: 20px;
+                height: 20px;
+            }
+            .schedule-grid {
+                grid-template-columns: 50px repeat(7, 1fr);
+                font-size: 11px;
+            }
+            .header-cell {
+                padding: 8px 2px;
+                font-size: 12px;
+            }
+            .week-header {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .date-cell {
+                min-height: 70px;
+                padding: 3px;
+            }
+            .date-number {
+                font-size: 12px;
+                margin-bottom: 2px;
+            }
+            .event {
+                font-size: 9px;
+                padding: 3px 4px;
+                margin-bottom: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .modal-content {
+                margin: 5% auto;
+                padding: 20px;
+                width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            .modal-title {
+                font-size: 18px;
+            }
+            .modal-details {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .info-section {
+                padding: 15px;
+                margin-top: 30px;
+            }
+            .info-section h2 {
+                font-size: 18px;
+            }
+            .info-section ul {
+                font-size: 14px;
+            }
+            .highlight-box {
+                padding: 12px;
+                margin: 15px 0;
+            }
+            .highlight-box h3 {
+                font-size: 16px;
+            }
+            .highlight-box ul {
+                font-size: 13px;
+            }
+            .highlight-box li {
+                margin-bottom: 6px;
+            }
+            /* タップしやすいようにイベントの高さを確保 */
+            .event {
+                min-height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+            /* 横スクロール可能にする */
+            .schedule-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -15px;
+                padding: 0 15px;
+            }
+            /* 日付セルの最小幅を確保 */
+            .date-cell {
+                min-width: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌻 夏休み特別イベントカレンダー 2025</h1>
+        <p class="subtitle">4歳・2歳のお子様向け特別イベント（和光市・朝霞市・新座市）</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color special-event"></div>
+                <span>特別イベント</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color water-event"></div>
+                <span>水遊びイベント</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color workshop"></div>
+                <span>ワークショップ</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color festival"></div>
+                <span>お祭り</span>
+            </div>
+        </div>
+
+        <!-- 7月20日～7月31日 -->
+        <h2 style="text-align: center; color: #34495e; margin: 30px 0 20px;">7月20日（日）～ 7月31日（木）</h2>
+        <div class="schedule-wrapper">
+        <div class="schedule-grid">
+            <div class="header-cell">週</div>
+            <div class="header-cell">日</div>
+            <div class="header-cell">月</div>
+            <div class="header-cell">火</div>
+            <div class="header-cell">水</div>
+            <div class="header-cell">木</div>
+            <div class="header-cell">金</div>
+            <div class="header-cell">土</div>
+            
+            <!-- 第1週: 7/20-7/26 -->
+            <div class="week-header">7/20-26</div>
+            <div class="date-cell sunday">
+                <div class="date-number">20日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">21日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">22日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-722')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">23日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">24日</div>
+                <div class="event special-event" onclick="showDetails('library-story-724')">図書館読み聞かせ</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">25日</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">26日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-726')">プラネタリウム</div>
+                <div class="event special-event" onclick="showDetails('planetarium-evening-726')">星と音楽のひととき</div>
+            </div>
+
+            <!-- 第2週: 7/27-7/31 -->
+            <div class="week-header">7/27-31</div>
+            <div class="date-cell sunday">
+                <div class="date-number">27日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-727')">プラネタリウム</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">28日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">29日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-729')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">30日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">31日</div>
+                <div class="event special-event" onclick="showDetails('library-story-731')">図書館読み聞かせ</div>
+                <div class="event workshop" onclick="showDetails('pottery-731')">陶芸体験（新座）</div>
+                <div class="event workshop" onclick="showDetails('fula-731')">親子フラダンス</div>
+            </div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+        </div>
+        </div>
+
+        <!-- 8月1日～8月31日 -->
+        <h2 style="text-align: center; color: #34495e; margin: 30px 0 20px;">8月1日（金）～ 8月31日（日）</h2>
+        <div class="schedule-wrapper">
+        <div class="schedule-grid">
+            <div class="header-cell">週</div>
+            <div class="header-cell">日</div>
+            <div class="header-cell">月</div>
+            <div class="header-cell">火</div>
+            <div class="header-cell">水</div>
+            <div class="header-cell">木</div>
+            <div class="header-cell">金</div>
+            <div class="header-cell">土</div>
+            
+            <!-- 第1週: 8/1-8/2 -->
+            <div class="week-header">8/1-2</div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell" style="background-color: #f5f5f5;"></div>
+            <div class="date-cell">
+                <div class="date-number">1日</div>
+                <div class="event festival" onclick="showDetails('saika-festival-1')">彩夏祭（朝霞）</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">2日</div>
+                <div class="event festival" onclick="showDetails('saika-festival-2')">彩夏祭（朝霞）</div>
+                <div class="event special-event" onclick="showDetails('library-event-82')">夏休み子どものつどい</div>
+                <div class="event special-event" onclick="showDetails('star-observation-82')">星空観察会</div>
+            </div>
+
+            <!-- 第2週: 8/3-8/9 -->
+            <div class="week-header">8/3-9</div>
+            <div class="date-cell sunday">
+                <div class="date-number">3日</div>
+                <div class="event festival" onclick="showDetails('saika-festival-3')">彩夏祭 花火大会</div>
+                <div class="event special-event" onclick="showDetails('planetarium-83')">プラネタリウム</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">4日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">5日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-85')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">6日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">7日</div>
+                <div class="event special-event" onclick="showDetails('library-story-87')">図書館読み聞かせ</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">8日</div>
+                <div class="event workshop" onclick="showDetails('picture-book-88')">かたちあそび絵本づくり</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">9日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-89')">プラネタリウム</div>
+            </div>
+
+            <!-- 第3週: 8/10-8/16 -->
+            <div class="week-header">8/10-16</div>
+            <div class="date-cell sunday">
+                <div class="date-number">10日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-810')">プラネタリウム</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">11日（祝）</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">12日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-812')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">13日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">14日</div>
+                <div class="event special-event" onclick="showDetails('library-story-814')">図書館読み聞かせ</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">15日</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">16日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-816')">プラネタリウム</div>
+            </div>
+
+            <!-- 第4週: 8/17-8/23 -->
+            <div class="week-header">8/17-23</div>
+            <div class="date-cell sunday">
+                <div class="date-number">17日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-817')">プラネタリウム</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">18日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">19日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-819')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">20日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">21日</div>
+                <div class="event special-event" onclick="showDetails('library-story-821')">図書館読み聞かせ</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">22日</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">23日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-823')">プラネタリウム</div>
+            </div>
+
+            <!-- 第5週: 8/24-8/31 -->
+            <div class="week-header">8/24-31</div>
+            <div class="date-cell sunday">
+                <div class="date-number">24日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-824')">プラネタリウム</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">25日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">26日</div>
+                <div class="event water-event" onclick="showDetails('wapia-water-826')">Wapia水遊び</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">27日</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">28日</div>
+                <div class="event special-event" onclick="showDetails('library-story-828')">図書館読み聞かせ</div>
+            </div>
+            <div class="date-cell">
+                <div class="date-number">29日</div>
+            </div>
+            <div class="date-cell saturday">
+                <div class="date-number">30日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-830')">プラネタリウム</div>
+                <div class="event special-event" onclick="showDetails('kaekko-bazaar-830')">かえっこバザール</div>
+            </div>
+            <div class="week-header" style="grid-column: 1;">8/31</div>
+            <div class="date-cell sunday">
+                <div class="date-number">31日</div>
+                <div class="event special-event" onclick="showDetails('planetarium-831')">プラネタリウム</div>
+            </div>
+        </div>
+        </div>
+
+        <!-- モーダル -->
+        <div id="eventModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3 id="modalTitle" class="modal-title"></h3>
+                <div id="modalDetails" class="modal-details"></div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>📝 ご利用にあたって</h3>
+            <ul>
+                <li>イベントをクリックすると詳細情報が表示されます</li>
+                <li>事前申込が必要なイベントは早めにお申し込みください</li>
+                <li>天候により中止・変更の可能性があります</li>
+                <li>各施設の通常利用（児童館、じゃぶじゃぶ池等）は毎日可能です</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>🎯 4歳・2歳におすすめの特別イベント</h2>
+            <ul>
+                <li><strong>Wapia水遊びイベント（毎週火曜日）</strong>：幼児も安全に楽しめる水遊び企画</li>
+                <li><strong>図書館読み聞かせ（毎週木曜日）</strong>：年齢別プログラムで飽きずに楽しめます</li>
+                <li><strong>プラネタリウム（週末）</strong>：短時間プログラムで小さなお子様も楽しめます</li>
+                <li><strong>彩夏祭（8/1-3）</strong>：日中は屋台、夜は花火と一日中楽しめます</li>
+                <li><strong>夏休み子どものつどい（8/2）</strong>：影絵や大型絵本など特別プログラム</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // イベント詳細データ
+        const eventDetails = {
+            // Wapia水遊び
+            'wapia-water-722': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>7月22日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            'wapia-water-729': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>7月29日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            'wapia-water-85': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>8月5日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            'wapia-water-812': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>8月12日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            'wapia-water-819': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>8月19日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            'wapia-water-826': {
+                title: 'Wapia水遊びイベント',
+                details: `
+                    <strong>日時：</strong>8月26日（火）時間は当日発表<br>
+                    <strong>場所：</strong>和光市総合児童センター Wapia<br>
+                    <strong>対象：</strong>幼児～小学生<br>
+                    <strong>料金：</strong>無料<br>
+                    <strong>持ち物：</strong>水着、タオル、着替え<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>屋外の広場で水遊びイベントを開催。スプリンクラーや水鉄砲など、年齢に応じた水遊びが楽しめます。更衣室あり。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>問合せ：</strong>048-465-2525
+                `
+            },
+            // 図書館読み聞かせ
+            'library-story-724': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>7月24日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            'library-story-731': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>7月31日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            'library-story-87': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>8月7日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            'library-story-814': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>8月14日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            'library-story-821': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>8月21日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            'library-story-828': {
+                title: '図書館おはなし会',
+                details: `
+                    <strong>日時：</strong>8月28日（木）<br>
+                    　・幼児向け：10:30～11:00<br>
+                    　・4歳以上：15:30～16:00<br>
+                    <strong>場所：</strong>各市図書館（本館・分館）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>絵本の読み聞かせ、紙芝居、手遊びなど。年齢に応じたプログラムで、小さなお子様も楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回20名程度
+                `
+            },
+            // プラネタリウム
+            'planetarium-726': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>7月26日（土）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と「たなばたものがたり」など、幼児向けプログラムを投影。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-727': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>7月27日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と「たなばたものがたり」など、幼児向けプログラムを投影。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-83': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月3日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-89': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月9日（土）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-810': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月10日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-816': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月16日（土）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-817': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月17日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-823': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月23日（土）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-824': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月24日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-830': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月30日（土）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'planetarium-831': {
+                title: 'プラネタリウム投影',
+                details: `
+                    <strong>日時：</strong>8月31日（日）11:00、14:00<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夏の星座解説と幼児向けプログラム。約30分間。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回80名<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            // 特別イベント
+            'planetarium-evening-726': {
+                title: '星と音楽のひととき～プラネタリウムの夕べ',
+                details: `
+                    <strong>日時：</strong>7月26日（土）17:00～<br>
+                    <strong>場所：</strong>新座市児童センター プラネタリウム<br>
+                    <strong>対象：</strong>どなたでも（未就学児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>夕方の特別投影。星空の解説と心地よい音楽のコラボレーション。通常より長めの45分間のプログラムで、ゆったりとした時間を過ごせます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>80名<br>
+                    <strong>問合せ：</strong>048-479-8822<br>
+                    <strong>アクセス：</strong>新座市本多1-3-10
+                `
+            },
+            'kaekko-bazaar-830': {
+                title: 'かえっこバザール',
+                details: `
+                    <strong>日時：</strong>8月30日（土）時間調整中（詳細は8月上旬発表）<br>
+                    <strong>場所：</strong>新座市児童センター<br>
+                    <strong>対象：</strong>幼児～小学生（幼児は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>使わなくなったおもちゃを「カエルポイント」に交換して、他のおもちゃと交換できるエコイベント。ゲームコーナーでポイントを貯めることも可能。「こども店長」として自分のお店を出すこともできます（要事前申込）。
+                    </div>
+                    <strong>持ち物：</strong>交換したいおもちゃ（なくても参加可）<br>
+                    <strong>こども店長募集：</strong>8月中旬から受付予定<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'star-observation-82': {
+                title: '星空観察会',
+                details: `
+                    <strong>日時：</strong>8月2日（土）19:00～20:30<br>
+                    <strong>場所：</strong>新座市児童センター 屋上<br>
+                    <strong>対象：</strong>どなたでも（小学生以下は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>天体望遠鏡で夏の星座を観察。土星の輪も見られるかも！専門スタッフが星座の解説をしてくれます。曇天・雨天時は室内でプラネタリウム投影。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>持ち物：</strong>懐中電灯、虫除けスプレー<br>
+                    <strong>問合せ：</strong>048-479-8822<br>
+                    <strong>※注意：</strong>広報にいざ7月号の日程に誤りがありました（7/26→8/2に訂正）
+                `
+            },
+            'pottery-731': {
+                title: '陶芸体験教室',
+                details: `
+                    <strong>日時：</strong>7月31日（木）10:00～12:00<br>
+                    <strong>場所：</strong>新座市大和田公民館<br>
+                    <strong>対象：</strong>4歳以上の親子<br>
+                    <strong>料金：</strong>材料費500円<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>親子で楽しむ陶芸体験。お皿やコップなど、好きな作品を作ります。作品は焼成後、後日お渡し。
+                    </div>
+                    <strong>申込：</strong>要事前申込（7月15日から受付）<br>
+                    <strong>定員：</strong>親子10組<br>
+                    <strong>問合せ：</strong>048-479-0517
+                `
+            },
+            'fula-731': {
+                title: '親子フラダンス教室',
+                details: `
+                    <strong>日時：</strong>7月31日（木）13:30～14:30<br>
+                    <strong>場所：</strong>新座市栗原公民館<br>
+                    <strong>対象：</strong>3歳以上の親子<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>ハワイアンミュージックに合わせて、親子で楽しくフラダンスを踊ります。初心者歓迎。
+                    </div>
+                    <strong>申込：</strong>要事前申込<br>
+                    <strong>定員：</strong>親子15組<br>
+                    <strong>持ち物：</strong>動きやすい服装、飲み物
+                `
+            },
+            'saika-festival-1': {
+                title: '彩夏祭（さいかさい）',
+                details: `
+                    <strong>日時：</strong>8月1日（金）15:00～21:00<br>
+                    <strong>場所：</strong>朝霞中央公園・青葉台公園周辺<br>
+                    <strong>料金：</strong>無料（屋台は有料）<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>100以上の屋台、ステージイベント、子ども向け遊びコーナー。金曜日は前夜祭として、比較的ゆったり楽しめます。
+                    </div>
+                    <strong>見どころ：</strong>キッズエリアには、ミニ縁日や水遊びコーナーあり<br>
+                    <strong>アクセス：</strong>朝霞駅から徒歩15分
+                `
+            },
+            'saika-festival-2': {
+                title: '彩夏祭（さいかさい）',
+                details: `
+                    <strong>日時：</strong>8月2日（土）12:00～21:00<br>
+                    <strong>場所：</strong>朝霞中央公園・青葉台公園周辺<br>
+                    <strong>料金：</strong>無料（屋台は有料）<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>よさこい踊りパレード、ステージイベント、100以上の屋台。土曜日は最も賑わいます。
+                    </div>
+                    <strong>見どころ：</strong>昼間は子ども向けイベントが充実<br>
+                    <strong>注意：</strong>混雑が予想されるため、ベビーカーより抱っこ紐推奨
+                `
+            },
+            'saika-festival-3': {
+                title: '彩夏祭 花火大会',
+                details: `
+                    <strong>日時：</strong>8月3日（日）12:00～21:00（花火19:15～20:15）<br>
+                    <strong>場所：</strong>朝霞中央公園・青葉台公園周辺<br>
+                    <strong>料金：</strong>無料（屋台は有料）<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>よさこい踊り、ステージイベント、屋台。夜は約7,000発の花火大会！埼玉県内有数の規模。
+                    </div>
+                    <strong>花火観覧：</strong>小さなお子様連れは、少し離れた場所からの観覧がおすすめ<br>
+                    <strong>持ち物：</strong>レジャーシート、虫除けスプレー
+                `
+            },
+            'library-event-82': {
+                title: '夏休み子どものつどい',
+                details: `
+                    <strong>日時：</strong>8月2日（土）<br>
+                    　・幼児向け：10:00～10:30<br>
+                    　・小学生向け：11:00～11:45<br>
+                    <strong>場所：</strong>和光市図書館本館<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>手袋人形、影絵、大型絵本の読み聞かせなど、夏休み特別プログラム。普段とは違う特別な演出で楽しめます。
+                    </div>
+                    <strong>申込：</strong>不要（当日先着順）<br>
+                    <strong>定員：</strong>各回30名<br>
+                    <strong>問合せ：</strong>048-463-8723
+                `
+            },
+            'star-observation-82': {
+                title: '星空観察会',
+                details: `
+                    <strong>日時：</strong>8月2日（土）19:00～20:30<br>
+                    <strong>場所：</strong>新座市児童センター 屋上<br>
+                    <strong>対象：</strong>どなたでも（小学生以下は保護者同伴）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>天体望遠鏡で夏の星座を観察。土星の輪も見られるかも！曇天・雨天時は室内でプラネタリウム投影。
+                    </div>
+                    <strong>申込：</strong>不要（当日参加可）<br>
+                    <strong>持ち物：</strong>懐中電灯、虫除けスプレー<br>
+                    <strong>問合せ：</strong>048-479-8822
+                `
+            },
+            'picture-book-88': {
+                title: 'かたちあそびで絵本をつくろう',
+                details: `
+                    <strong>日時：</strong>8月8日（金）10:00～11:30<br>
+                    <strong>場所：</strong>新座市中央図書館<br>
+                    <strong>対象：</strong>4歳～小学2年生（保護者同伴可）<br>
+                    <strong>料金：</strong>無料<br>
+                    <div class="highlight">
+                        <strong>内容：</strong>色々な形の紙を使って、オリジナルの絵本を作ります。はさみが使えなくても大丈夫！
+                    </div>
+                    <strong>申込：</strong>要事前申込（7月25日から受付）<br>
+                    <strong>定員：</strong>15名<br>
+                    <strong>持ち物：</strong>のり、色鉛筆<br>
+                    <strong>問合せ：</strong>048-481-1115
+                `
+            }
+        };
+
+        function showDetails(eventId) {
+            const modal = document.getElementById('eventModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDetails = document.getElementById('modalDetails');
+            
+            if (eventDetails[eventId]) {
+                modalTitle.textContent = eventDetails[eventId].title;
+                modalDetails.innerHTML = eventDetails[eventId].details;
+                modal.style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('eventModal');
+            modal.style.display = 'none';
+        }
+
+        // モーダル外をクリックしたら閉じる
+        window.onclick = function(event) {
+            const modal = document.getElementById('eventModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
